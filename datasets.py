@@ -24,13 +24,14 @@ class Dataset():
         if data_set == 'cifar10':
             self.train_set = dset.CIFAR10(root=data_folder,
                                           train=True,
-                                          transform=[transforms.ToTensor(), transforms.Normalize()],
+                                          transform=[transforms.ToTensor(), transforms.Resize((28, 28)),
+                                                     transforms.Normalize([0., 0., 0.], [0.5, 0.5, 0.5])],
                                           download=True)
 
             self.test_set = dset.CIFAR10(root=data_folder,
                                          train=False,
-                                         transform=[transforms.ToTensor(), transforms.Normalize()])
-
+                                         transform=[transforms.ToTensor(), transforms.Resize((28, 28)),
+                                                    transforms.Normalize([0., 0., 0.], [0.5, 0.5, 0.5])])
 
     def get_train_size(self):
         return len(self.train_set)
@@ -44,5 +45,6 @@ class Dataset():
 
     def get_test_loader(self, batch_size, shuffle=False):
         test_loader = DataLoader(dataset= self.test_set, batch_size=batch_size, shuffle=shuffle, num_workers=8)
+        return test_loader
 
-        
+
