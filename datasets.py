@@ -22,16 +22,16 @@ class Dataset():
                                        transform=transforms.ToTensor())
 
         if data_set == 'cifar10':
+            self.composed_transforms = transforms.Compose([[transforms.ToTensor(), transforms.Resize((28, 28)),
+                                                     transforms.Normalize([0., 0., 0.], [0.5, 0.5, 0.5])]])
             self.train_set = dset.CIFAR10(root=data_folder,
                                           train=True,
-                                          transform=[transforms.ToTensor(), transforms.Resize((28, 28)),
-                                                     transforms.Normalize([0., 0., 0.], [0.5, 0.5, 0.5])],
+                                          transform=self.composed_transforms,
                                           download=True)
 
             self.test_set = dset.CIFAR10(root=data_folder,
                                          train=False,
-                                         transform=[transforms.ToTensor(), transforms.Resize((28, 28)),
-                                                    transforms.Normalize([0., 0., 0.], [0.5, 0.5, 0.5])])
+                                         transform=self.composed_transforms)
 
     def get_train_size(self):
         return len(self.train_set)
